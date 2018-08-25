@@ -1,4 +1,4 @@
-package com.fuxuemingzhu.filescodingconvert.main;
+package com.wk.main;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.*;
@@ -11,37 +11,37 @@ import java.util.Collection;
  * Title: Main
  * </p>
  * <p>
- * Description:½«GBKºÍUTF-8¸ñÊ½µÄ¹¤³Ì¸ñÊ½»¥×ª£¬¿ÉÌæ»»ÌØ¶¨ºó×ºÃûµÄÎÄ¼ş£¬Ìæ»»ºóµÄÎÄ¼şÄ¿Â¼ÈÔÈ»ÓëÔ´ÎÄ¼şÄ¿Â¼½á¹¹ÏàÍ¬£¬Ä¬ÈÏÊÇGBK×ªUTF-8
+ * Description:å°†GBKå’ŒUTF-8æ ¼å¼çš„å·¥ç¨‹æ ¼å¼äº’è½¬ï¼Œå¯æ›¿æ¢ç‰¹å®šåç¼€åçš„æ–‡ä»¶ï¼Œæ›¿æ¢åçš„æ–‡ä»¶ç›®å½•ä»ç„¶ä¸æºæ–‡ä»¶ç›®å½•ç»“æ„ç›¸åŒï¼Œé»˜è®¤æ˜¯GBKè½¬UTF-8
  * </p>
  *
  */
 public class Main {
 
     /**
-     * fileFolderPath Ô´ÎÄ¼ş´æ´¢Â·¾¶
+     * fileFolderPath æºæ–‡ä»¶å­˜å‚¨è·¯å¾„
      * <p/>
-     * ´ËÄ¿Â¼±ØĞë´æÔÚ
+     * æ­¤ç›®å½•å¿…é¡»å­˜åœ¨
      */
-    public static String sourceFolderPath = "D:\\Eclipse\\Eclipse-Android\\ConvertTest";
+    public static String sourceFolderPath = "G:\\svn\\åŠŸç‡é¢„æµ‹\\NSF3200å…‰ä¼åŠŸç‡é¢„æµ‹\\V1.24\\å…‰ä¼æ¨¡ä»¿é£ç”µçš„å¤‡ä»½é€»è¾‘ç‰ˆæœ¬æµ‹è¯•\\PPFS\\src";
     /**
-     * outputFolderPath Êä³öÎÄ¼ş´æ´¢Â·¾¶
+     * outputFolderPath è¾“å‡ºæ–‡ä»¶å­˜å‚¨è·¯å¾„
      * <p/>
-     * Èç¹û Êä³öÎÄ¼ş´æ´¢Â·¾¶ÓëÔ´Ä¿Â¼Â·¾¶ÏàÍ¬£¬ÔòÔ´ÎÄ¼ş»á±»Ìæ»»ÎªUTF-8¸ñÊ½
+     * å¦‚æœ è¾“å‡ºæ–‡ä»¶å­˜å‚¨è·¯å¾„ä¸æºç›®å½•è·¯å¾„ç›¸åŒï¼Œåˆ™æºæ–‡ä»¶ä¼šè¢«æ›¿æ¢ä¸ºUTF-8æ ¼å¼
      * <p/>
-     * ´ËÄ¿Â¼¿ÉÒÔ²»´æÔÚ£¬³ÌĞò»á×Ô¶¯´´½¨
+     * æ­¤ç›®å½•å¯ä»¥ä¸å­˜åœ¨ï¼Œç¨‹åºä¼šè‡ªåŠ¨åˆ›å»º
      */
-    public static String outputFolderPath = "D:\\Eclipse\\Eclipse-Android\\ConvertTest2";
+    public static String outputFolderPath = "G:\\svn\\åŠŸç‡é¢„æµ‹\\NSF3200å…‰ä¼åŠŸç‡é¢„æµ‹\\V1.24\\å…‰ä¼æ¨¡ä»¿é£ç”µçš„å¤‡ä»½é€»è¾‘ç‰ˆæœ¬æµ‹è¯•\\PPFS\\src";
     /**
-     * extensions Òª×ª»»µÄÎÄ¼şºó×ºÃû
+     * extensions è¦è½¬æ¢çš„æ–‡ä»¶åç¼€å
      */
     public static String[] extensions = new String[]{"java", "xml"};
 
     /**
-     * sourceCodingType Ô´ÎÄ¼ş±àÂë¸ñÊ½
+     * sourceCodingType æºæ–‡ä»¶ç¼–ç æ ¼å¼
      */
     public static String sourceCodingType = "GBK";
     /**
-     * outputCodingType Ä¿±êÎÄ¼ş±àÂë¸ñÊ½
+     * outputCodingType ç›®æ ‡æ–‡ä»¶ç¼–ç æ ¼å¼
      */
     public static String outputCodingType = "UTF-8";
 
@@ -50,7 +50,7 @@ public class Main {
      * Title: main
      * </p>
      * <p>
-     * Description:main·½·¨£¬³ÌĞòµÄÈë¿Ú
+     * Description:mainæ–¹æ³•ï¼Œç¨‹åºçš„å…¥å£
      * </p>
      *
      * @param args
@@ -59,20 +59,23 @@ public class Main {
 
         try {
             String srcDirPath = sourceFolderPath;
-            // ×ªÎªUTF-8±àÂë¸ñÊ½Ô´ÂëÂ·¾¶
+            // è½¬ä¸ºUTF-8ç¼–ç æ ¼å¼æºç è·¯å¾„
             String utf8DirPath = outputFolderPath;
-            Collection javaGbkFileCol;
-            // »ñÈ¡ËùÓĞjavaÎÄ¼ş
-            javaGbkFileCol = listFiles(new File(srcDirPath), extensions, true);
+            // è·å–æ‰€æœ‰javaæ–‡ä»¶
+            Collection<File> javaGbkFileCol = listFiles(new File(srcDirPath), extensions, true);
             if (javaGbkFileCol == null) {
                 return;
             }
-            for (Object javaGbkFile : javaGbkFileCol) {
-                // UTF8¸ñÊ½ÎÄ¼şÂ·¾¶
+            BytesEncodingDetect s = new BytesEncodingDetect();
+            for (File javaGbkFile : javaGbkFileCol) {
+                // UTF8æ ¼å¼æ–‡ä»¶è·¯å¾„
                 String utf8FilePath = utf8DirPath + ((File) javaGbkFile).getAbsolutePath().substring(srcDirPath.length());
-                // Ê¹ÓÃGBK¶ÁÈ¡Êı¾İ£¬È»ºóÓÃUTF-8Ğ´ÈëÊı¾İ
-                writeLines(new File(utf8FilePath), readLines(((File) javaGbkFile), sourceCodingType), outputCodingType);
-                System.out.println("files convert success.");
+                
+                String fileCode = BytesEncodingDetect.javaname[s.detectEncoding(javaGbkFile)];
+                System.out.println("File encoding:"+fileCode);
+                // ä½¿ç”¨GBKè¯»å–æ•°æ®ï¼Œç„¶åç”¨UTF-8å†™å…¥æ•°æ®
+                writeLines(new File(utf8FilePath), readLines(((File) javaGbkFile), fileCode), outputCodingType);
+                System.out.println("Convert "+javaGbkFile+" from "+fileCode+" to "+outputCodingType+" convert success.");
             }
         } catch (Exception e) {
             System.out.println("error");
@@ -81,7 +84,7 @@ public class Main {
     }
 
     /**
-     * ²éÕÒÒ»¸öÄ¿Â¼ÏÂÃæ·ûºÏ¶ÔÓ¦À©Õ¹ÃûµÄÎÄ¼şµÄ¼¯ºÏlistFiles(File directory, String[]extensions, boolean recursive)
+     * æŸ¥æ‰¾ä¸€ä¸ªç›®å½•ä¸‹é¢ç¬¦åˆå¯¹åº”æ‰©å±•åçš„æ–‡ä»¶çš„é›†åˆlistFiles(File directory, String[]extensions, boolean recursive)
      *
      * @param directory
      * @param extensions
@@ -115,7 +118,7 @@ public class Main {
     }
 
     /**
-     * °ÑÎÄ¼şÖĞµÄÄÚÈİÖğĞĞµÄ¿½±´µ½Ò»¸ö¶ÔÓ¦±àÂëµÄlist<String>ÖĞÈ¥
+     * æŠŠæ–‡ä»¶ä¸­çš„å†…å®¹é€è¡Œçš„æ‹·è´åˆ°ä¸€ä¸ªå¯¹åº”ç¼–ç çš„list<String>ä¸­å»
      *
      * @param file
      * @param encoding
@@ -126,7 +129,7 @@ public class Main {
 
 
         InputStream in = null;
-
+        
         try {
 
             in = openInputStream(file);
@@ -143,7 +146,7 @@ public class Main {
     }
 
     /**
-     * °Ñ¼¯ºÏÖĞµÄÄÚÈİ¸ù¾İ¶ÔÓ¦×Ö·û±àÂëºÍĞĞ±àÂëÖğÏî²åÈëµ½ÎÄ¼şÖĞ
+     * æŠŠé›†åˆä¸­çš„å†…å®¹æ ¹æ®å¯¹åº”å­—ç¬¦ç¼–ç å’Œè¡Œç¼–ç é€é¡¹æ’å…¥åˆ°æ–‡ä»¶ä¸­
      *
      * @param file
      * @param data
@@ -159,6 +162,7 @@ public class Main {
             out = openOutputStream(file);
 
             IOUtils.write(data, out, encoding);
+//            IOUtils.write(data, out);
 
         } finally {
 
@@ -169,7 +173,7 @@ public class Main {
     }
 
     /**
-     * ¸ù¾İÖ¸¶¨µÄÎÄ¼ş»ñÈ¡Ò»¸öĞÂµÄÎÄ¼şÊä³öÁ÷£ºopenOutputStream (File file)
+     * æ ¹æ®æŒ‡å®šçš„æ–‡ä»¶è·å–ä¸€ä¸ªæ–°çš„æ–‡ä»¶è¾“å‡ºæµï¼šopenOutputStream (File file)
      *
      * @param file
      * @return
@@ -212,7 +216,7 @@ public class Main {
     }
 
     /**
-     * ¸ù¾İÖ¸¶¨µÄÎÄ¼ş»ñÈ¡Ò»¸öĞÂµÄÎÄ¼şÊäÈëÁ÷£ºopenInputStream(File file)
+     * æ ¹æ®æŒ‡å®šçš„æ–‡ä»¶è·å–ä¸€ä¸ªæ–°çš„æ–‡ä»¶è¾“å…¥æµï¼šopenInputStream(File file)
      *
      * @param file
      * @return
@@ -245,7 +249,7 @@ public class Main {
     }
 
     /**
-     * ²éÕÒÒ»¸öÄ¿Â¼ÏÂÃæ·ûºÏ¶ÔÓ¦À©Õ¹ÃûµÄÎÄ¼şµÄ¼¯ºÏ
+     * æŸ¥æ‰¾ä¸€ä¸ªç›®å½•ä¸‹é¢ç¬¦åˆå¯¹åº”æ‰©å±•åçš„æ–‡ä»¶çš„é›†åˆ
      *
      * @param directory
      * @param fileFilter
@@ -308,7 +312,7 @@ public class Main {
     }
 
     /**
-     * ¸ù¾İÒ»¸ö¹ıÂË¹æÔò»ñÈ¡Ò»¸öÄ¿Â¼ÏÂµÄÎÄ¼ş
+     * æ ¹æ®ä¸€ä¸ªè¿‡æ»¤è§„åˆ™è·å–ä¸€ä¸ªç›®å½•ä¸‹çš„æ–‡ä»¶
      *
      * @param files
      * @param directory
@@ -341,7 +345,7 @@ public class Main {
     }
 
     /**
-     * °ÑÖ¸¶¨µÄ×Ö·û´®Êı×é±ä³Éºó×ºÃû¸ñÊ½×Ö·û´®Êı×é
+     * æŠŠæŒ‡å®šçš„å­—ç¬¦ä¸²æ•°ç»„å˜æˆåç¼€åæ ¼å¼å­—ç¬¦ä¸²æ•°ç»„
      *
      * @param extensions
      * @return
