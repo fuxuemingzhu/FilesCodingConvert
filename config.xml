@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="GB2312"?>  
+<root>
+	<sourceFolderPath>G:\svn\功率预测\NSF3100风功率预测\V1.44\Wpfs\src\</sourceFolderPath>
+	
+	<outputFolderPath>G:\svn\功率预测\NSF3100风功率预测\V1.44\Wpfs\src\</outputFolderPath>
+	
+	<extensions>java xml</extensions>
+	
+	<!-- fill a encoding or auto to run automatic -->
+	<sourceCodingType>auto</sourceCodingType>
+	
+	<outputCodingType>UTF-8</outputCodingType>
+</root>

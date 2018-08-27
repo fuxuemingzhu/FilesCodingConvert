@@ -2,9 +2,13 @@ package com.wk.main;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.*;
+import org.dom4j.Document;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
 import java.io.*;
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * <p>
@@ -22,7 +26,7 @@ public class Main {
      * <p/>
      * 此目录必须存在
      */
-    public static String sourceFolderPath = "G:\\svn\\功率预测\\NSF3200光伏功率预测\\V1.24\\光伏模仿风电的备份逻辑版本测试\\PPFS\\src";
+    public static String sourceFolderPath = File.separator;
     /**
      * outputFolderPath 输出文件存储路径
      * <p/>
@@ -30,7 +34,7 @@ public class Main {
      * <p/>
      * 此目录可以不存在，程序会自动创建
      */
-    public static String outputFolderPath = "G:\\svn\\功率预测\\NSF3200光伏功率预测\\V1.24\\光伏模仿风电的备份逻辑版本测试\\PPFS\\src";
+    public static String outputFolderPath = File.separator;
     /**
      * extensions 要转换的文件后缀名
      */
@@ -58,6 +62,19 @@ public class Main {
     public static void main(String[] args) {
 
         try {
+        	
+        	File f = new File(System.getProperty("user.dir")
+					+ "/config.xml");
+			SAXReader reader = new SAXReader();
+			Document doc = reader.read(f);
+			Element root = doc.getRootElement();
+			sourceFolderPath = root.elementText("sourceFolderPath");
+			outputFolderPath = root.elementText("outputFolderPath");
+			extensions = root.elementText("extensions").split("\\ ");
+			sourceCodingType = root.elementText("sourceCodingType");
+			outputCodingType = root.elementText("outputCodingType");
+			
+			
             String srcDirPath = sourceFolderPath;
             // 转为UTF-8编码格式源码路径
             String utf8DirPath = outputFolderPath;
@@ -66,19 +83,36 @@ public class Main {
             if (javaGbkFileCol == null) {
                 return;
             }
+            
             BytesEncodingDetect s = new BytesEncodingDetect();
+            
+            boolean autoDetect = sourceCodingType.equalsIgnoreCase("auto");
+            
+            if(autoDetect){
             for (File javaGbkFile : javaGbkFileCol) {
                 // UTF8格式文件路径
                 String utf8FilePath = utf8DirPath + ((File) javaGbkFile).getAbsolutePath().substring(srcDirPath.length());
                 
+                
                 String fileCode = BytesEncodingDetect.javaname[s.detectEncoding(javaGbkFile)];
-                System.out.println("File encoding:"+fileCode);
+                MyLogger.log.info("File encoding:"+fileCode);
                 // 使用GBK读取数据，然后用UTF-8写入数据
                 writeLines(new File(utf8FilePath), readLines(((File) javaGbkFile), fileCode), outputCodingType);
-                System.out.println("Convert "+javaGbkFile+" from "+fileCode+" to "+outputCodingType+" convert success.");
+                MyLogger.log.info("Convert "+javaGbkFile+" from "+fileCode+" to "+outputCodingType+" convert success.");
+            	}
+            }else{
+            	for (File javaGbkFile : javaGbkFileCol) {
+            
+            	String utf8FilePath = utf8DirPath + ((File) javaGbkFile).getAbsolutePath().substring(srcDirPath.length());
+                
+                
+                // 使用GBK读取数据，然后用UTF-8写入数据
+                writeLines(new File(utf8FilePath), readLines(((File) javaGbkFile), sourceCodingType), outputCodingType);
+                MyLogger.log.info("Convert "+javaGbkFile+" from "+sourceCodingType+" to "+outputCodingType+" convert success.");
+            	}
             }
         } catch (Exception e) {
-            System.out.println("error");
+            MyLogger.log.error("error");
             e.printStackTrace();
         }
     }
@@ -96,7 +130,7 @@ public class Main {
         IOFileFilter filter;
 
         if (directory == null || !directory.isDirectory()) {
-            System.out.println("directory is not right.");
+            MyLogger.log.warn("directory is not right.");
             return null;
         }
         if (extensions == null) {
