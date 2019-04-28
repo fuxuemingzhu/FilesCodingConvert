@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="GB2312"?>  
 <root>
-	<sourceFolderPath>G:\svn\功率预测\NSF3100风功率预测\V1.44\Wpfs\src\</sourceFolderPath>
+	<sourceFolderPath>E:\现场\20190522限电文本异常检测\PPFS\codetest</sourceFolderPath>
 	
-	<outputFolderPath>G:\svn\功率预测\NSF3100风功率预测\V1.44\Wpfs\src\</outputFolderPath>
+	<outputFolderPath></outputFolderPath>
 	
-	<extensions>java xml</extensions>
+	<extensions>java xml html</extensions>
 	
 	<!-- fill a encoding or auto to run automatic -->
 	<sourceCodingType>auto</sourceCodingType>

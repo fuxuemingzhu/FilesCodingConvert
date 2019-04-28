@@ -3,7 +3,13 @@ package com.wk.main;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.Arrays;
+
+import javax.print.DocFlavor.BYTE_ARRAY;
+
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 class BytesEncodingDetect extends Encoding {
 	  // Frequency tables to hold the GB, Big5, and EUC-TW character
@@ -117,6 +123,8 @@ class BytesEncodingDetect extends Encoding {
 	    int index, maxscore = 0;
 	    int encoding_guess = OTHER;
 	    scores = new int[TOTALTYPES];
+	        	
+	    
 	    // Assign Scores
 	    scores[GB2312] = gb2312_probability(rawtext);
 	    scores[GBK] = gbk_probability(rawtext);
@@ -155,6 +163,191 @@ class BytesEncodingDetect extends Encoding {
 	    }
 	    return encoding_guess;
 	  }
+	  
+	  /**
+	   * Function : detectEncoding Aruguments: byte array Returns : One of the encodings from the Encoding enumeration (GB2312, HZ,
+	   * BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the byte array and assigns it a probability score for
+	   * each encoding type. The encoding type with the highest probability is returned.
+	   */
+	  public int detectEncodings(byte[] rawtext) {
+	    int[] scores;
+	    int index, maxscore = 0;
+	    int encoding_guess = OTHER;
+	    scores = new int[TOTALTYPES];
+	    //get bits
+	    StringBuffer rawtextString = bytesToBit(rawtext);
+	    //get all possible bits
+	    StringBuffer []rawtextStringPossible =new StringBuffer[8];
+	    for(int i=0;i<8;i++){
+		StringBuffer tbf= new StringBuffer();
+		for(int j=0;j<i;j++)tbf.append("1");
+		tbf.append(rawtextString);
+		while(tbf.length()%8!=0){
+		    tbf.append("0");
+		}
+		rawtextStringPossible[i]=tbf;
+	    }
+	    //try a by a 
+	    for (StringBuffer stringBuffer : rawtextStringPossible) {
+		byte[] tbite =  bitsToBytes(stringBuffer.toString());
+		System.out.println(BytesEncodingDetect.javaname[detectEncoding(tbite)]);
+		try {
+		    System.out.print( new String(tbite,"ISO-2022-CN"));
+		} catch (UnsupportedEncodingException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
+	    }
+	    
+	    
+	    
+	    byte b = 0x35; // 0011 0101
+	    byte[] bs = {0x35,0x36};
+	    	// 输出 [0, 0, 1, 1, 0, 1, 0, 1]
+	    	System.out.println(Arrays.toString(getBooleanArray(b)));
+	    	//"[0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0]"
+	    	System.out.println(Arrays.toString(getBooleansArray(bs)));
+	    	// 输出 00110101
+	    	System.out.println(byteToBit(b));
+	    	//"0011010100110110"
+	    	System.out.println(bytesToBit(bs));
+	    	// JDK自带的方法，会忽略前面的 0 "110101"
+	    	System.out.println(Integer.toBinaryString(0x35));
+	    	StringBuffer bft = new StringBuffer("1");
+	    	bft.append(bytesToBit(bs));
+	    	//"10011010100110110"
+	    	System.out.println(bft);
+
+	    	//"53"
+	    	System.out.println(bitToByte(byteToBit(b)));
+	    	//"00110101"
+	    	System.out.println(byteToBit(bitToByte(byteToBit(b))));
+	    	//"0011010100110110"
+	    	System.out.println(bytesToBit(bs).toString());
+	    	//
+	    	System.out.println(bitsToBytes(bytesToBit(bs).toString()));
+	    	
+	    
+	    // Assign Scores
+	    scores[GB2312] = gb2312_probability(rawtext);
+	    scores[GBK] = gbk_probability(rawtext);
+	    scores[GB18030] = gb18030_probability(rawtext);
+	    scores[HZ] = hz_probability(rawtext);
+	    scores[BIG5] = big5_probability(rawtext);
+	    scores[CNS11643] = euc_tw_probability(rawtext);
+	    scores[ISO2022CN] = iso_2022_cn_probability(rawtext);
+	    scores[UTF8] = utf8_probability(rawtext);
+	    scores[UNICODE] = utf16_probability(rawtext);
+	    scores[EUC_KR] = euc_kr_probability(rawtext);
+	    scores[CP949] = cp949_probability(rawtext);
+	    scores[JOHAB] = 0;
+	    scores[ISO2022KR] = iso_2022_kr_probability(rawtext);
+	    scores[ASCII] = ascii_probability(rawtext);
+	    scores[SJIS] = sjis_probability(rawtext);
+	    scores[EUC_JP] = euc_jp_probability(rawtext);
+	    scores[ISO2022JP] = iso_2022_jp_probability(rawtext);
+	    scores[UNICODET] = 0;
+	    scores[UNICODES] = 0;
+	    scores[ISO2022CN_GB] = 0;
+	    scores[ISO2022CN_CNS] = 0;
+	    scores[OTHER] = 0;
+	    // Tabulate Scores
+	    for (index = 0; index < TOTALTYPES; index++) {
+	      if (debug)
+	        System.err.println("Encoding " + nicename[index] + " score " + scores[index]);
+	      if (scores[index] > maxscore) {
+	        encoding_guess = index;
+	        maxscore = scores[index];
+	      }
+	    }
+	    // Return OTHER if nothing scored above 50
+	    if (maxscore <= 50) {
+	      encoding_guess = OTHER;
+	    }
+	    return encoding_guess;
+	  }
+	  
+
+		/** 
+	     * 将byte转换为一个长度为8的byte数组，数组每个值代表bit 
+	     */  
+	    public static byte[] getBooleanArray(byte b) {  
+	        byte[] array = new byte[8];  
+	        for (int i = 7; i >= 0; i--) {  
+	            array[i] = (byte)(b & 1);  
+	            b = (byte) (b >> 1);  
+	        }  
+	        return array;  
+	    }  
+		/** 
+	     * 将byte[]转换为一个长度为8的byte数组，数组每个值代表bit 
+	     */  
+	    public static byte[] getBooleansArray(byte [] b) {  
+	        byte[] array = new byte[b.length*8];  
+	        for (int i = 0; i <b.length;i++) {
+	            for(int j=0;j<8;j++){
+	        	array[i*8+j]=getBooleanArray(b[i])[j];
+	            }
+	        }  
+	        return array;  
+	    }  
+	    /** 
+	     * 把byte转为字符串的bit 
+	     */  
+	    public static String byteToBit(byte b) {  
+	        return ""  
+	                + (byte) ((b >> 7) & 0x1) + (byte) ((b >> 6) & 0x1)  
+	                + (byte) ((b >> 5) & 0x1) + (byte) ((b >> 4) & 0x1)  
+	                + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)  
+	                + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);  
+	    }
+	    /** 
+	     * 把byte[]转为字符串的bit 
+	     */  
+	    public static StringBuffer bytesToBit(byte [] b) {  
+		StringBuffer bf = new StringBuffer();
+		for (byte c : b) {
+		    bf.append(byteToBit(c));
+		}
+	        return bf;  
+	    }
+	    
+    public static byte bitToByte(String bit) {
+	int re, len;
+	if (null == bit) {
+	    return 0;
+	}
+	len = bit.length();
+	if (len != 4 && len != 8) {
+	    return 0;
+	}
+	if (len == 8) {// 8 bit处理
+	    if (bit.charAt(0) == '0') {// 正数
+		re = Integer.parseInt(bit, 2);
+	    } else {// 负数  
+		re = Integer.parseInt(bit, 2) - 256;
+	    }
+	} else {// 4 bit处理  
+	    re = Integer.parseInt(bit, 2);
+	}
+	return (byte) re;
+    }
+    
+    public static byte[] bitsToBytes(String bit) {
+	while(bit.length()%8!=0){
+	    bit+="0";
+	}
+	byte [] bytes = new byte[bit.length()/8];
+	
+	for(int i=0;i<bit.length()/8;){
+	    bytes[i]=bitToByte(bit.substring(i, i+8));
+	    i+=8;
+	}
+	
+	return bytes;
+    }
+	    
+	    
 
 	  /*
 	   * Function: gb2312_probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text
