@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="GB2312"?>  
+<root>
+	<sourceFolderPath>E:\现场\20190522限电文本异常检测\PPFS\codetest</sourceFolderPath>
+	
+	<outputFolderPath></outputFolderPath>
+	
+	<extensions>java xml html</extensions>
+	
+	<!-- fill a encoding or auto to run automatic -->
+	<sourceCodingType>auto</sourceCodingType>
+	
+	<outputCodingType>UTF-8</outputCodingType>
+</root>

@@ -43,10 +43,20 @@
 - 如果输出文件存储路径与源目录路径相同，则源文件夹中特定文件会被替换为指定格式
 - 输出目录可以不存在，程序可自动创建
 
-项目托管在[我的GitHub](https://github.com/fuxuemingzhu/FilesCodingConvert "负雪明烛的Github")上，欢迎Star和Fork。
+项目托管在[我的GitHub](https://github.com/wangkun19930608/FilesCodingConvert  "原 https://github.com/fuxuemingzhu/FilesCodingConvert 负雪明烛的Github")上，欢迎Star和Fork。
 
 哪位朋友做个界面吧，方便以后使用。
 
 
 -------------------
 2015/9/2 21:13:34 
+
+添加自定义配置文件进行参数设置
+
+添加自动识别原文档编码识别 
+
+添加发布版本,可以直接运行
+
+开发环境java 1.6 x64.
+
+20180827
